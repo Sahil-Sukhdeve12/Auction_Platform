@@ -24,7 +24,7 @@ const createAuction=async(req,res)=>{
 
 const getActiveAuctions=async(req,res)=>{
     try{
-        const auctions=await Auction.find({status:"Active"});
+        const auctions=await Auction.find({status:"ACTIVE"});
         res.status(200).json(auctions);
     }
     catch(error){

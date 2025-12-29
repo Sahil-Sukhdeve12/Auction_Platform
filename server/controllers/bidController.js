@@ -35,6 +35,10 @@ const placeBid=async(req,res)=>{
         const bid=new Bid({auctionId,bidAmount,}); //creating instance
         await auction.save();
 
+        //update auction
+        auction.currentHighestBid=bidAmount;
+        await auction.save();
+
         res.status(201).json({message:"Bid placed sucessfully"});
     }
     catch(error){

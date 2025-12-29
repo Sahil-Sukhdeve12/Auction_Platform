@@ -82,3 +82,80 @@ async-await (bhai bhai)
 500-> server encountered unexpected error couldn't process/handle it
 
 "implemented a complete auction lifecycle — creation, real-time bidding with validation, automatic expiry handling, and winner declaration — all backed by MongoDB with clean REST APIs.”
+
+-----------------------------Frontend Part-------------------------------------------
+service layer is a file that handles all http requests to the backend.
+#components should not know backend url's
+fetch()->browswer API to call backend
+BASE_URL->single source of truth
+async/await->handle api response
+json.stringify()->send json body
+
+📌 HTTP vs HTTPS
+Environment	Protocol
+Local development	http://
+Production (real site)	https://
+
+HTTPS requires SSL certificates
+Your local Node server does NOT have SSL
+
+So never use HTTPS locally unless you set SSL explicitly.
+
+react=ui is a function of state i.e we dont manually update ui,update state. react re-renders ui automatically
+component is a function that return ui(jsx). input->state/props output->ui
+jsx-> lets us write html like code inside javascript. bts:- jsx->React.createElement() we dont manipulate dom react does it.
+
+useState->
+const[auctions,setAuctions]=useState([]);
+state is data that can change over time & affects ui.
+here auctions=current data shown, setAuctions=function to update it
+when we call setAuctions(data) then react says state changed->re-render UI.
+
+useEffect-> it runs side effects(api calls,timers,subscriptions)
+useEffect(()=>{
+    fetchAuctions();
+},[]); []-> means run this effect only once,when component loads
+#we cannot call api's directly while rendering ui so we use useEffect.
+perfect for api calls,initial data fetch.
+
+Mental Model
+
+Compare to backend:
+Backend       | 	React
+Server starts |	Component mounts
+Call DB once  |Fetch API once
+
+async api call
+const data=await getAllAuctions();
+setAuctions(data);
+
+call backend->get auction list->update state->react re-renders ui
+# we never manipulate dom manually.
+
+.map()->react needs an array of jsx elements.
+converts array of data->array of ui blocks
+
+key helps react identify which item changed.
+Rules-> 1.always use unique id,2.never use index if possible
+
+#logic to build a page
+1.what data do i need? Auction list->useState([])
+2.when should i fetch it? on page load->useEffect([],..)
+3.how to show it? Array->map->jsx
+4.what if data is empty? conditional rendering
+
+useParams()->read url parameters
+link->client side navigation
+controlled input-> input linked to state
+re-fetch after post->sync ui with backend
+
+Backend changed data ✅
+Frontend still has old state ❌
+
+So you must:
+
+Fetch updated data → setState → re-render
+
+React rule:
+
+UI updates only when state changes
